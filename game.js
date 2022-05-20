@@ -4,12 +4,16 @@
 
  var game_start = document.getElementById("start")
  var game_end = document.getElementById("end")
- var walls = document.getElementsByClassName("boundary")
- var board = document.getElementsByClassName("boundary example")
  var game = document.getElementById("game")
+ var walls = game.getElementsByClassName("boundary")
+ var board = document.getElementsByClassName("boundary example")
+ var instructions = document.getElementById("status")
  
 // declare score
 var score = 0
+
+// Add intrusctions
+instructions.innerHTML = '<h2>Begin by moving your mouse over the "S".<br> Reach the end without touching the walls or you will lose!<br> Click on S to reset</h2>'
 
 // start-game function
 function start_game() {
@@ -34,18 +38,18 @@ function you_lost() {
     for (let i = 0; i < walls.length; i++) {
         walls[i].classList.add("youlose")
     }
+    score -= 10
     board[0].innerHTML = "YOU LOST!" + "</br> Score:" + score 
     board[0].style.height = "auto"
     board[0].style.width = "fit-content"
-    score -= 10
 }
 
 // winning function - when touching end
 function you_won() {
+    score += 5
     board[0].innerHTML = "YOU WON!" + "</br> Score:" + score
     board[0].style.height = "auto"
     board[0].style.width = "fit-content"
-    score += 5
 }
 
 // Game utilities
@@ -63,8 +67,5 @@ game_end.addEventListener("mouseover", you_won);
 for (let i = 0; i < walls.length; i++) {
     walls[i].addEventListener("mouseover", you_lost);
 }
-
-
-
 
 

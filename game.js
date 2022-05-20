@@ -1,10 +1,10 @@
- // window.onunload = function {}
+ window.onload = function () {
  
 // initialize event variables
 
+ var game = document.getElementById("game")
  var game_start = document.getElementById("start")
  var game_end = document.getElementById("end")
- var game = document.getElementById("game")
  var walls = game.getElementsByClassName("boundary")
  var board = document.getElementsByClassName("boundary example")
  var instructions = document.getElementById("status")
@@ -17,6 +17,7 @@ instructions.innerHTML = '<h2>Begin by moving your mouse over the "S".<br> Reach
 
 // start-game function
 function start_game() {
+    instructions.innerHTML = "<h2><br><br>Game Started!</h2>"
     for (let i = 0; i < walls.length; i++) {
         walls[i].classList.remove("youlose")
     }
@@ -24,12 +25,14 @@ function start_game() {
     for (let i = 0; i < walls.length; i++) {
         walls[i].addEventListener("mouseover", you_lost);
     }
+    // Reset game on click
+    game_start.addEventListener("click", reset_game);
 }
 
 // reset-game function (click on S)
 function reset_game() {
     score = 0
-    board[0].innerHTML = "Score reset!" + "</br> Score:" + score 
+    board[0].innerHTML = "Score reset!" + "</br> Score: " + score 
     board[0].style.height = "auto"
     board[0].style.width = "fit-content"
     // Call the game start function
@@ -38,11 +41,12 @@ function reset_game() {
 
 // losing function - when touching walls
 function you_lost() {
+    instructions.innerHTML = "<h2><br><br>Start Over Again!</h2>"
     for (let i = 0; i < walls.length; i++) {
         walls[i].classList.add("youlose")
     }
     score -= 10
-    board[0].innerHTML = "YOU LOST!" + "</br> Score:" + score 
+    board[0].innerHTML = "YOU LOST!" + "</br> Score: " + score 
     board[0].style.height = "auto"
     board[0].style.width = "fit-content"
     // Disable winning
@@ -58,7 +62,7 @@ function you_lost() {
 // winning function - when touching end
 function you_won() {
     score += 5
-    board[0].innerHTML = "YOU WON!" + "</br> Score:" + score
+    board[0].innerHTML = "YOU WON!" + "</br> Score: " + score
     board[0].style.height = "auto"
     board[0].style.width = "fit-content"
     // Disable winning again
@@ -91,7 +95,7 @@ for (let i = 0; i < walls.length; i++) {
 
 /* sequence of the game:
 When move over S:
-enable win adn lose
+enable win and lose
 
 lose:
 disable win 
@@ -100,3 +104,5 @@ enable start
 when win:
 disable win and lose
 enable start*/
+
+}

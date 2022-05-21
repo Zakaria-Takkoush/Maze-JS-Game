@@ -27,10 +27,28 @@ function start_game() {
     }
     // Reset game on click
     game_start.addEventListener("click", reset_game);
+
+    // When the user leaves the game box
+    game.addEventListener("mouseleave", box_leave);
+}
+
+// leave the game box
+function box_leave() {
+    instructions.innerHTML = "<h2><br>Don't get out of the box!!<br> Start again!</h2>"
+    // Disable winning
+    game_end.removeEventListener("mouseover", you_won);
+    // Disable losing again
+    for (let i = 0; i < walls.length; i++) {
+        walls[i].removeEventListener("mouseover", you_lost);
+    }    
+    // Enable the abilty to start again
+    game_start.addEventListener("mouseover", start_game);
 }
 
 // reset-game function (click on S)
 function reset_game() {
+    instructions.innerHTML = "<h2><br>Game Reset!<br>Start Over Again!</h2>"
+    // Resest Score
     score = 0
     board[0].innerHTML = "Score reset!" + "</br> Score: " + score 
     board[0].style.height = "auto"
@@ -41,12 +59,13 @@ function reset_game() {
 
 // losing function - when touching walls
 function you_lost() {
-    instructions.innerHTML = "<h2><br><br>Start Over Again!</h2>"
+    instructions.innerHTML = "<h2><br>YOU LOST!<br>Start Over Again!</h2>"
     for (let i = 0; i < walls.length; i++) {
         walls[i].classList.add("youlose")
     }
+    // CHange score
     score -= 10
-    board[0].innerHTML = "YOU LOST!" + "</br> Score: " + score 
+    board[0].innerHTML = "Score: " + score 
     board[0].style.height = "auto"
     board[0].style.width = "fit-content"
     // Disable winning
@@ -57,12 +76,16 @@ function you_lost() {
     }    
     // enable the abilty to start again
     game_start.addEventListener("mouseover", start_game);
+    // Remove out of box listener
+    game.removeEventListener("mouseleave", box_leave);
 }
 
 // winning function - when touching end
 function you_won() {
+    instructions.innerHTML = "<h2><br>YOU WON!!<br>Start Over Again!</h2>"
+    // CHange score
     score += 5
-    board[0].innerHTML = "YOU WON!" + "</br> Score: " + score
+    board[0].innerHTML = "Score: " + score
     board[0].style.height = "auto"
     board[0].style.width = "fit-content"
     // Disable winning again
@@ -73,6 +96,8 @@ function you_won() {
     }    
     // Enable the abilty to start again
     game_start.addEventListener("mouseover", start_game);
+    // Remove out of box listener
+    game.removeEventListener("mouseleave", box_leave);
 }
 
 // Game utilities
@@ -92,6 +117,9 @@ for (let i = 0; i < walls.length; i++) {
     walls[i].addEventListener("mouseover", you_lost);
 }
 */
+
+// leave the game box
+// game.addEventListener("mouseleave", you_lost);
 
 /* sequence of the game:
 When move over S:

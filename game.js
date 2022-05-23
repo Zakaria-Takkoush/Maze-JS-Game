@@ -8,7 +8,22 @@
  var walls = game.getElementsByClassName("boundary")
  var board = document.getElementsByClassName("boundary example")
  var instructions = document.getElementById("status")
- 
+
+ // Create the timer bar
+ // var timer_bar = document.createElement("div")
+ var live_time
+ var last_time
+ var best_time
+ var timer_list = []
+
+ var tens = 00
+ var secs = 00
+ var append_tens
+ var append_secs
+ var interval;
+
+
+
 // declare score
 var score = 0
 
@@ -30,6 +45,9 @@ function start_game() {
 
     // When the user leaves the game box
     game.addEventListener("mouseleave", box_leave);
+
+    // Start timer
+    interval = setInterval(startTimer)
 }
 
 // leave the game box
@@ -55,6 +73,13 @@ function reset_game() {
     board[0].style.width = "fit-content"
     // Call the game start function
     start_game()
+
+    // Reset timer
+    clearInterval(interval)
+    tens = "00"
+    secs = "00"
+    append_secs.innerHTML = secs
+    append_tens.innerHTML = tens
 }
 
 // losing function - when touching walls
@@ -98,6 +123,9 @@ function you_won() {
     game_start.addEventListener("mouseover", start_game);
     // Remove out of box listener
     game.removeEventListener("mouseleave", box_leave);
+
+    // End timer
+    clearInterval(interval)
 }
 
 // Game utilities
@@ -132,5 +160,25 @@ enable start
 when win:
 disable win and lose
 enable start*/
+
+function startTimer() {
+    tens++
+    if (tens<9){                                // 0 to 9 1/100 secs
+        append_tens.innerHTML = "0" + tens
+    }
+    if (tens>9){                                // 9 to 99 1/100 secs
+        append_tens.innerHTML = tens
+    }
+    if (tens>99){                               // after 1 second cycle
+        secs++
+        append_secs.innerHTML = "0" + secs
+        tens = 0
+        append_tens.innerHTML = "0" + 0
+    }
+    if (secs>9){                                // after 10 second cycle
+        append_secs.innerHTML = secs
+    }
+}
+
 
 }

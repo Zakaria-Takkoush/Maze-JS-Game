@@ -11,18 +11,21 @@
 
  // Create the timer bar
  // var timer_bar = document.createElement("div")
- var live_time
- var last_time
- var best_time
+
+ var live_time = secs + ":" + tens
+ var last_time = secs + ":" + tens
+ var best_time = secs + ":" + tens
  var timer_list = []
 
  var tens = 00
  var secs = 00
- var append_tens
- var append_secs
+ var append_tens = document.getElementById("tens")
+ var append_secs = document.getElementById("secs")
+ var last_tens = document.getElementById("last_tens")
+ var last_secs = document.getElementById("last_secs")
+ var best_tens = document.getElementById("best_tens")
+ var best_secs = document.getElementById("best_secs")
  var interval;
-
-
 
 // declare score
 var score = 0
@@ -80,6 +83,10 @@ function reset_game() {
     secs = "00"
     append_secs.innerHTML = secs
     append_tens.innerHTML = tens
+    last_secs.innerHTML = secs
+    last_tens.innerHTML = tens
+    best_secs.innerHTML = secs
+    best_tens.innerHTML = tens
 }
 
 // losing function - when touching walls
@@ -125,6 +132,10 @@ function you_won() {
     game.removeEventListener("mouseleave", box_leave);
 
     // End timer
+    last_secs.innerHTML = secs
+    last_tens.innerHTML = tens
+    append_secs.innerHTML = 00
+    append_tens.innerHTML = 00
     clearInterval(interval)
 }
 
@@ -180,5 +191,8 @@ function startTimer() {
     }
 }
 
+console.log(tens);
+console.log(secs);
+console.log(interval);
 
 }

@@ -9,23 +9,6 @@
  var board = document.getElementsByClassName("boundary example")
  var instructions = document.getElementById("status")
 
- // Create the timer bar
- // var timer_bar = document.createElement("div")
-
- var live_time = secs + ":" + tens
- var last_time = secs + ":" + tens
- var best_time = secs + ":" + tens
- var timer_list = []
-
- var tens = 00
- var secs = 00
- var append_tens = document.getElementById("tens")
- var append_secs = document.getElementById("secs")
- var last_tens = document.getElementById("last_tens")
- var last_secs = document.getElementById("last_secs")
- var best_tens = document.getElementById("best_tens")
- var best_secs = document.getElementById("best_secs")
- var interval;
 
 // declare score
 var score = 0
@@ -50,7 +33,7 @@ function start_game() {
     game.addEventListener("mouseleave", box_leave);
 
     // Start timer
-    interval = setInterval(startTimer)
+    startTimer()
 }
 
 // leave the game box
@@ -77,16 +60,6 @@ function reset_game() {
     // Call the game start function
     start_game()
 
-    // Reset timer
-    clearInterval(interval)
-    tens = "00"
-    secs = "00"
-    append_secs.innerHTML = secs
-    append_tens.innerHTML = tens
-    last_secs.innerHTML = secs
-    last_tens.innerHTML = tens
-    best_secs.innerHTML = secs
-    best_tens.innerHTML = tens
 }
 
 // losing function - when touching walls
@@ -110,6 +83,8 @@ function you_lost() {
     game_start.addEventListener("mouseover", start_game);
     // Remove out of box listener
     game.removeEventListener("mouseleave", box_leave);
+
+    stopTimer()
 }
 
 // winning function - when touching end
@@ -130,13 +105,9 @@ function you_won() {
     game_start.addEventListener("mouseover", start_game);
     // Remove out of box listener
     game.removeEventListener("mouseleave", box_leave);
+    
+    stopTimer()
 
-    // End timer
-    last_secs.innerHTML = secs
-    last_tens.innerHTML = tens
-    append_secs.innerHTML = 00
-    append_tens.innerHTML = 00
-    clearInterval(interval)
 }
 
 // Game utilities
@@ -172,27 +143,26 @@ when win:
 disable win and lose
 enable start*/
 
+/* ----- TImer ----- */
+
+var interval,start_time
+var live_time = document.getElementById("live_time")
+var last_time = document.getElementById("last_time")
+var best_time = document.getElementById("best_time")
+
 function startTimer() {
-    tens++
-    if (tens<9){                                // 0 to 9 1/100 secs
-        append_tens.innerHTML = "0" + tens
-    }
-    if (tens>9){                                // 9 to 99 1/100 secs
-        append_tens.innerHTML = tens
-    }
-    if (tens>99){                               // after 1 second cycle
-        secs++
-        append_secs.innerHTML = "0" + secs
-        tens = 0
-        append_tens.innerHTML = "0" + 0
-    }
-    if (secs>9){                                // after 10 second cycle
-        append_secs.innerHTML = secs
-    }
+    start_time = Date.now();
+    interval = setInterval(function() {
+        var elapsedTime = Date.now() - start_time;
+        live_time.innerHTML = "Live: " + (elapsedTime / 1000).toFixed(3);
+    }, 100);
 }
 
-console.log(tens);
-console.log(secs);
-console.log(interval);
+function stopTimer(){
+    clearInterval(interval);
+    live_time.innerHTML = "Live: 0.0";
+}
+
+
 
 }
